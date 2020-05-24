@@ -43,6 +43,22 @@ public class MainMenu extends javax.swing.JFrame {
         "11.jpg",
         "12.jpg",
         "13.jpg",};
+    String[] listOfGenres={
+        "Aksiyon ve Macera",
+        "Bilim Kurgu ve Fantastik Yapımlar",
+        "Romantik",
+        "Drama",
+        "Çocuk ve Aile",
+        "Belgesel",
+        "Komedi",
+        "Aksiyon",
+        "Korku",
+        "Bilim ve Doğa",
+        "Bilim Kurgu",
+        "Gerilim",
+        "Anime",
+        "Reality Program",
+    };
 
     public MainMenu() {
         initComponents();
@@ -52,7 +68,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void slideShow() {
         picture = new JLabel();
         picture.setBounds(0, 0, 1024, 768);
-        SetImageSize(12);
+        SetImageSize(listOfPictures.length-1);
 
         timer = new Timer(5000, (ActionEvent e) -> {
             SetImageSize(x);
@@ -115,6 +131,10 @@ public class MainMenu extends javax.swing.JFrame {
         jTextFieldUserName = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jDateChooserDateOfBirth = new com.toedter.calendar.JDateChooser();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListMovieGenres = new javax.swing.JList<>();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NETFLIX");
@@ -295,6 +315,29 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLayeredPane1.add(jPanelSignUp, "card3");
 
+        jPanel1.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
+        jPanel1.setLayout(null);
+
+        jListMovieGenres.setBackground(new java.awt.Color(51, 51, 51));
+        jListMovieGenres.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListMovieGenres.setForeground(new java.awt.Color(255, 255, 255));
+        jListMovieGenres.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() { return listOfGenres.length; }
+            public String getElementAt(int i) { return listOfGenres[i]; }
+        });
+        jScrollPane1.setViewportView(jListMovieGenres);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(150, 150, 400, 280);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Üç Farklı Program Türü Seçiniz:");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(10, 60, 650, 49);
+
+        jLayeredPane1.add(jPanel1, "card4");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -384,8 +427,10 @@ public class MainMenu extends javax.swing.JFrame {
             System.out.println("Parolalar aynı değil!");
             JOptionPane.showMessageDialog(null, "Parolalar aynı değil!");
         } else {
-            JOptionPane.showMessageDialog(null, "sa");
+            JOptionPane.showMessageDialog(null, "Tebrikler başarıyla kayıt oldun.");
             System.out.println("Tebrikler başarıyla kayıt oldun.");
+            jPanelSignUp.setVisible(false);
+            jPanel1.setVisible(true);
         }
 
     }//GEN-LAST:event_jButtonSignUpActionPerformed
@@ -417,6 +462,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSignUp;
     private com.toedter.calendar.JDateChooser jDateChooserDateOfBirth;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -426,11 +472,14 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JList<String> jListMovieGenres;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelSignIn;
     private javax.swing.JPanel jPanelSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignIn;
     private javax.swing.JPasswordField jPasswordFieldSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignUpConfirmation;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldMailSignIn;
     private javax.swing.JTextField jTextFieldMailSignUp;
     private javax.swing.JTextField jTextFieldUserName;
