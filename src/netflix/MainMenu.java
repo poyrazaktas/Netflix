@@ -60,7 +60,7 @@ public class MainMenu extends javax.swing.JFrame {
         "Gerilim",
         "Anime",
         "Reality Program",};
-    ArrayList<String> listOfSelectedGenres = new ArrayList<>();
+    String[] listOfSelectedGenres = new String[3];
     String[] listOfMoviesHighRated;
 
     public MainMenu() {
@@ -111,10 +111,6 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelMoviesHighRated = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jPanelSignIn = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -143,24 +139,9 @@ public class MainMenu extends javax.swing.JFrame {
         jListMovieGenres = new javax.swing.JList<>();
         jLabel10 = new javax.swing.JLabel();
         jButtonLinkToMoviesHighRated = new javax.swing.JButton();
-
-        jPanelMoviesHighRated.setLayout(null);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Bu türlere göre önerilenler");
-        jPanelMoviesHighRated.add(jLabel11);
-        jLabel11.setBounds(90, 100, 570, 80);
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList1);
-
-        jPanelMoviesHighRated.add(jScrollPane2);
-        jScrollPane2.setBounds(150, 216, 360, 180);
+        jPanelMoviesHighRated = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabelSelectedGenres = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NETFLIX");
@@ -376,6 +357,23 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLayeredPane1.add(jPanelMoviesGenres, "card4");
 
+        jPanelMoviesHighRated.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
+        jPanelMoviesHighRated.setLayout(null);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Seçilen türler:");
+        jPanelMoviesHighRated.add(jLabel11);
+        jLabel11.setBounds(10, 10, 180, 50);
+
+        jLabelSelectedGenres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabelSelectedGenres.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelSelectedGenres.setText("jLabelSelectedGenres");
+        jPanelMoviesHighRated.add(jLabelSelectedGenres);
+        jLabelSelectedGenres.setBounds(10, 50, 650, 50);
+
+        jLayeredPane1.add(jPanelMoviesHighRated, "card5");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -493,14 +491,17 @@ public class MainMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lütfen üç tane tür seçiniz!");
         } else {
             
-            jListMovieGenres.getSelectedValuesList().forEach((selectedGenre) -> {
-                listOfSelectedGenres.add(selectedGenre);
-                
-            });
+            for(int i=0;i<jListMovieGenres.getSelectedValuesList().size();i++){
+                listOfSelectedGenres[i]=
+                        jListMovieGenres.getSelectedValuesList().get(i);
+            }
             System.out.println("Seçilen film türleri: ");
-            listOfSelectedGenres.forEach((genre) -> {
-                System.out.println(genre);
-            });
+            for (String listOfSelectedGenre : listOfSelectedGenres) {
+                
+                System.out.println(listOfSelectedGenre);
+            }
+            jLabelSelectedGenres.setText(listOfSelectedGenres[0]+", "+listOfSelectedGenres[1]+", "+
+                    listOfSelectedGenres[2]);
             jPanelMoviesGenres.setVisible(false);
             jPanelMoviesHighRated.setVisible(true);
         }
@@ -528,8 +529,8 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelSelectedGenres;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListMovieGenres;
     private javax.swing.JPanel jPanelMoviesGenres;
     private javax.swing.JPanel jPanelMoviesHighRated;
@@ -539,7 +540,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordFieldSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignUpConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextFieldMailSignIn;
     private javax.swing.JTextField jTextFieldMailSignUp;
     private javax.swing.JTextField jTextFieldUserName;
