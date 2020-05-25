@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +44,8 @@ public class MainMenu extends javax.swing.JFrame {
         "11.jpg",
         "12.jpg",
         "13.jpg",};
-    String[] listOfGenres={
+
+    String[] listOfGenres = {
         "Aksiyon ve Macera",
         "Bilim Kurgu ve Fantastik Yapımlar",
         "Romantik",
@@ -57,8 +59,9 @@ public class MainMenu extends javax.swing.JFrame {
         "Bilim Kurgu",
         "Gerilim",
         "Anime",
-        "Reality Program",
-    };
+        "Reality Program",};
+    ArrayList<String> listOfSelectedGenres = new ArrayList<>();
+    String[] listOfMoviesHighRated;
 
     public MainMenu() {
         initComponents();
@@ -68,7 +71,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void slideShow() {
         picture = new JLabel();
         picture.setBounds(0, 0, 1024, 768);
-        SetImageSize(listOfPictures.length-1);
+        SetImageSize(listOfPictures.length - 1);
 
         timer = new Timer(5000, (ActionEvent e) -> {
             SetImageSize(x);
@@ -108,6 +111,10 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelMoviesHighRated = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jPanelSignIn = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -131,10 +138,29 @@ public class MainMenu extends javax.swing.JFrame {
         jTextFieldUserName = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jDateChooserDateOfBirth = new com.toedter.calendar.JDateChooser();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelMoviesGenres = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListMovieGenres = new javax.swing.JList<>();
         jLabel10 = new javax.swing.JLabel();
+        jButtonLinkToMoviesHighRated = new javax.swing.JButton();
+
+        jPanelMoviesHighRated.setLayout(null);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Bu türlere göre önerilenler");
+        jPanelMoviesHighRated.add(jLabel11);
+        jLabel11.setBounds(90, 100, 570, 80);
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
+
+        jPanelMoviesHighRated.add(jScrollPane2);
+        jScrollPane2.setBounds(150, 216, 360, 180);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NETFLIX");
@@ -315,11 +341,11 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLayeredPane1.add(jPanelSignUp, "card3");
 
-        jPanel1.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
-        jPanel1.setLayout(null);
+        jPanelMoviesGenres.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
+        jPanelMoviesGenres.setLayout(null);
 
         jListMovieGenres.setBackground(new java.awt.Color(51, 51, 51));
-        jListMovieGenres.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListMovieGenres.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jListMovieGenres.setForeground(new java.awt.Color(255, 255, 255));
         jListMovieGenres.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() { return listOfGenres.length; }
@@ -327,16 +353,28 @@ public class MainMenu extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jListMovieGenres);
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(150, 150, 400, 280);
+        jPanelMoviesGenres.add(jScrollPane1);
+        jScrollPane1.setBounds(90, 90, 500, 360);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Üç Farklı Program Türü Seçiniz:");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(10, 60, 650, 49);
+        jPanelMoviesGenres.add(jLabel10);
+        jLabel10.setBounds(10, 20, 650, 49);
 
-        jLayeredPane1.add(jPanel1, "card4");
+        jButtonLinkToMoviesHighRated.setBackground(new java.awt.Color(102, 0, 0));
+        jButtonLinkToMoviesHighRated.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButtonLinkToMoviesHighRated.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLinkToMoviesHighRated.setText("DEVAM->");
+        jButtonLinkToMoviesHighRated.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLinkToMoviesHighRatedActionPerformed(evt);
+            }
+        });
+        jPanelMoviesGenres.add(jButtonLinkToMoviesHighRated);
+        jButtonLinkToMoviesHighRated.setBounds(190, 470, 280, 50);
+
+        jLayeredPane1.add(jPanelMoviesGenres, "card4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -372,8 +410,7 @@ public class MainMenu extends javax.swing.JFrame {
         if ("".equals(jTextFieldMailSignIn.getText()) || "".equals(password)) {
             JOptionPane.showMessageDialog(null, "E-postanızı ya da parolanızı "
                     + "eksik girdiniz.\nLütfen tekrar deneyin.");
-        }
-        else{
+        } else {
             System.out.println("Tebrikler başarıyla giriş yaptın.");
         }
     }//GEN-LAST:event_jButtonSignInActionPerformed
@@ -404,13 +441,12 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
         // TODO add your handling code here:
-        System.out.println("Kayıt sayfasındaki Kullanıcı Adı: "+ jTextFieldUserName.getText());
-        try{
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String dateOfBirth = dateFormat.format(jDateChooserDateOfBirth.getDate());
-        System.out.println("Kayıt sayfasındaki Doğum Tarihi: "+ dateOfBirth);
-        }
-        catch (NullPointerException nullPointerException){
+        System.out.println("Kayıt sayfasındaki Kullanıcı Adı: " + jTextFieldUserName.getText());
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String dateOfBirth = dateFormat.format(jDateChooserDateOfBirth.getDate());
+            System.out.println("Kayıt sayfasındaki Doğum Tarihi: " + dateOfBirth);
+        } catch (NullPointerException nullPointerException) {
             JOptionPane.showMessageDialog(null, "Lütfen doğum tarihinizi giriniz.");
         }
         System.out.println("Kayıt sayfasındaki E-posta: " + jTextFieldMailSignUp.getText());
@@ -418,7 +454,7 @@ public class MainMenu extends javax.swing.JFrame {
         System.out.println("Kayıt sayfasındaki Parola : " + password);
         String passwordConfirmation = String.valueOf(jPasswordFieldSignUpConfirmation.getPassword());
         System.out.println("Kayıt sayfasındaki Parola Tekrarı: " + passwordConfirmation);
-     
+
         if ("".equals(jTextFieldMailSignUp.getText()) || "".equals(password)
                 || "".equals(jTextFieldUserName.getText())) {
             JOptionPane.showMessageDialog(null, "Kullanıcı adınızı, e-postanızı ya da"
@@ -430,7 +466,7 @@ public class MainMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Tebrikler başarıyla kayıt oldun.");
             System.out.println("Tebrikler başarıyla kayıt oldun.");
             jPanelSignUp.setVisible(false);
-            jPanel1.setVisible(true);
+            jPanelMoviesGenres.setVisible(true);
         }
 
     }//GEN-LAST:event_jButtonSignUpActionPerformed
@@ -448,14 +484,34 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void jTextFieldUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUserNameActionPerformed
         // TODO add your handling code here:
-        System.out.println("Kayıt ekranındaki Kullanıcı Adı: "+jTextFieldUserName.getText());
+        System.out.println("Kayıt ekranındaki Kullanıcı Adı: " + jTextFieldUserName.getText());
     }//GEN-LAST:event_jTextFieldUserNameActionPerformed
+
+    private void jButtonLinkToMoviesHighRatedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLinkToMoviesHighRatedActionPerformed
+        // TODO add your handling code here:
+        if (jListMovieGenres.getSelectedValuesList().size() != 3) {
+            JOptionPane.showMessageDialog(null, "Lütfen üç tane tür seçiniz!");
+        } else {
+            
+            jListMovieGenres.getSelectedValuesList().forEach((selectedGenre) -> {
+                listOfSelectedGenres.add(selectedGenre);
+                
+            });
+            System.out.println("Seçilen film türleri: ");
+            listOfSelectedGenres.forEach((genre) -> {
+                System.out.println(genre);
+            });
+            jPanelMoviesGenres.setVisible(false);
+            jPanelMoviesHighRated.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonLinkToMoviesHighRatedActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonLinkToMoviesHighRated;
     private javax.swing.JButton jButtonLinkToSignIn;
     private javax.swing.JButton jButtonLinkToSignUp;
     private javax.swing.JButton jButtonSignIn;
@@ -463,6 +519,7 @@ public class MainMenu extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDateChooserDateOfBirth;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -472,14 +529,17 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListMovieGenres;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelMoviesGenres;
+    private javax.swing.JPanel jPanelMoviesHighRated;
     private javax.swing.JPanel jPanelSignIn;
     private javax.swing.JPanel jPanelSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignIn;
     private javax.swing.JPasswordField jPasswordFieldSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignUpConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextFieldMailSignIn;
     private javax.swing.JTextField jTextFieldMailSignUp;
     private javax.swing.JTextField jTextFieldUserName;
