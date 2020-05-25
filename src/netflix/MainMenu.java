@@ -139,6 +139,7 @@ public class MainMenu extends javax.swing.JFrame {
         jListMovieGenres = new javax.swing.JList<>();
         jLabel10 = new javax.swing.JLabel();
         jButtonLinkToMoviesHighRated = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jPanelMoviesHighRated = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabelSelectedGenres = new javax.swing.JLabel();
@@ -335,7 +336,7 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jListMovieGenres);
 
         jPanelMoviesGenres.add(jScrollPane1);
-        jScrollPane1.setBounds(90, 90, 500, 360);
+        jScrollPane1.setBounds(90, 100, 500, 320);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -354,6 +355,12 @@ public class MainMenu extends javax.swing.JFrame {
         });
         jPanelMoviesGenres.add(jButtonLinkToMoviesHighRated);
         jButtonLinkToMoviesHighRated.setBounds(190, 470, 280, 50);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel12.setText("*Çoklu seçimlerinizi Ctrl + Mouse Left Click ile yapabilirsiniz.");
+        jPanelMoviesGenres.add(jLabel12);
+        jLabel12.setBounds(90, 430, 500, 30);
 
         jLayeredPane1.add(jPanelMoviesGenres, "card4");
 
@@ -521,6 +528,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
