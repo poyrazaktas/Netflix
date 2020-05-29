@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -42,6 +43,7 @@ public class MainMenu extends javax.swing.JFrame {
     JLabel picture;
     Timer timer;
     int x = 0;
+    Date today=java.util.Calendar.getInstance().getTime();
     String[] listOfPictures = {
         "1.jpg",
         "2.jpg",
@@ -204,12 +206,16 @@ public class MainMenu extends javax.swing.JFrame {
         jLabelSecondGenre = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListSelectedGenreSecond = new javax.swing.JList<>();
+        jButtonLinkToNetflixUI = new javax.swing.JButton();
         jPanelNetflixUI = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextFieldSearch = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableProgrammes = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
+        jButtonWatchMovies = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        jTextFieldRating = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NETFLIX");
@@ -222,7 +228,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("       NETFLIX-EP");
+        jLabel4.setText("         NETFLIX");
         jPanelSignIn.add(jLabel4);
         jLabel4.setBounds(150, 50, 350, 35);
 
@@ -288,7 +294,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("  NETFLIX-EP' ye hoş geldin!");
+        jLabel1.setText("       NETFLIX'e hoş geldin!");
         jPanelSignUp.add(jLabel1);
         jLabel1.setBounds(110, 40, 430, 50);
 
@@ -491,6 +497,18 @@ public class MainMenu extends javax.swing.JFrame {
         jPanelMoviesHighRated.add(jScrollPane5);
         jScrollPane5.setBounds(10, 200, 640, 60);
 
+        jButtonLinkToNetflixUI.setBackground(new java.awt.Color(153, 0, 0));
+        jButtonLinkToNetflixUI.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButtonLinkToNetflixUI.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLinkToNetflixUI.setText("NETFLIX'TE İZLEMEYE BAŞLA->");
+        jButtonLinkToNetflixUI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLinkToNetflixUIActionPerformed(evt);
+            }
+        });
+        jPanelMoviesHighRated.add(jButtonLinkToNetflixUI);
+        jButtonLinkToNetflixUI.setBounds(110, 430, 440, 80);
+
         jLayeredPane1.add(jPanelMoviesHighRated, "card5");
 
         jPanelNetflixUI.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
@@ -535,6 +553,11 @@ public class MainMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableProgrammes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProgrammesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableProgrammes);
 
         jPanelNetflixUI.add(jScrollPane2);
@@ -545,6 +568,28 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel13.setText("*Aramanız büyük-küçük harf duyarlıdır.");
         jPanelNetflixUI.add(jLabel13);
         jLabel13.setBounds(80, 80, 500, 40);
+
+        jButtonWatchMovies.setBackground(new java.awt.Color(153, 0, 0));
+        jButtonWatchMovies.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButtonWatchMovies.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonWatchMovies.setText("İZLE");
+        jButtonWatchMovies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonWatchMoviesActionPerformed(evt);
+            }
+        });
+        jPanelNetflixUI.add(jButtonWatchMovies);
+        jButtonWatchMovies.setBounds(70, 410, 160, 90);
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("Derecelendir:");
+        jPanelNetflixUI.add(jLabel14);
+        jLabel14.setBounds(240, 420, 250, 70);
+
+        jTextFieldRating.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jPanelNetflixUI.add(jTextFieldRating);
+        jTextFieldRating.setBounds(510, 420, 100, 70);
 
         jLayeredPane1.add(jPanelNetflixUI, "card6");
 
@@ -612,7 +657,7 @@ public class MainMenu extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Şifre yanlış, lütfen tekrar deneyin.");
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "Tebrikler, başarıyla Netflix-EP'ye girdin.");
+                        JOptionPane.showMessageDialog(null, "Tebrikler, başarıyla Netflix'e giriş yaptın.");
                         //Kullanıcı yönetim arayüzüne geçiş yapacak
                         currentUser = new User(resultSet.getInt("id"),
                                 resultSet.getString("name"),
@@ -626,6 +671,8 @@ public class MainMenu extends javax.swing.JFrame {
                                 + " date_of_birth: " + currentUser.getDate_of_birth());
                         jPanelSignIn.setVisible(false);
                         jPanelNetflixUI.setVisible(true);
+                        statement.close();
+                        connection.close();
                     }
                 }
             } catch (SQLException ex) {
@@ -689,8 +736,10 @@ public class MainMenu extends javax.swing.JFrame {
             Connection connection = null;
             DbHelper dbHelper = new DbHelper();
             Statement statement = null;
+            Statement statementUser = null;
             PreparedStatement preparedStatement = null;
             ResultSet resultSet;
+            ResultSet resultSetUser = null;
 
             try {
                 connection = dbHelper.getConnection();
@@ -715,10 +764,26 @@ public class MainMenu extends javax.swing.JFrame {
                     preparedStatement.setString(3, String.valueOf(jPasswordFieldSignUp.getPassword()));
                     preparedStatement.setString(4, dateOfBirth);
                     preparedStatement.executeUpdate();
+                    String sqlUser = "select * from user where mail =\"" + jTextFieldMailSignUp.getText() + "\" LIMIT 1";
+                    statementUser = connection.createStatement();
+                    resultSetUser = statementUser.executeQuery(sqlUser);
+                    currentUser = new User(resultSetUser.getInt("id"),
+                            resultSetUser.getString("name"),
+                            resultSetUser.getString("mail"),
+                            resultSetUser.getString("password"),
+                            resultSetUser.getString("date_of_birth"));
+                    System.out.println("id: " + currentUser.getId()
+                            + " name: " + currentUser.getName()
+                            + " mail: " + currentUser.getMail()
+                            + " password: " + currentUser.getPassword()
+                            + " date_of_birth: " + currentUser.getDate_of_birth());
                     JOptionPane.showMessageDialog(null, "Tebrikler başarıyla kayıt oldun.");
                     System.out.println("Tebrikler başarıyla kayıt oldun.");
+                    statement.close();
+                    connection.close();
                     jPanelSignUp.setVisible(false);
                     jPanelMoviesGenres.setVisible(true);
+
                 }
             } catch (SQLException ex) {
                 dbHelper.showErrorMessage(ex);
@@ -827,22 +892,157 @@ public class MainMenu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextFieldSearchKeyReleased
 
+    private void jButtonLinkToNetflixUIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLinkToNetflixUIActionPerformed
+        // TODO add your handling code here:
+        System.out.println("NetflixUI açıldı.");
+        System.out.println("id: " + currentUser.getId()
+                + " name: " + currentUser.getName()
+                + " mail: " + currentUser.getMail()
+                + " password: " + currentUser.getPassword()
+                + " date_of_birth: " + currentUser.getDate_of_birth());
+        jPanelMoviesHighRated.setVisible(false);
+        jPanelNetflixUI.setVisible(true);
+    }//GEN-LAST:event_jButtonLinkToNetflixUIActionPerformed
+
+    private void jTableProgrammesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProgrammesMouseClicked
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jTableProgrammesMouseClicked
+
+    private void jButtonWatchMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWatchMoviesActionPerformed
+        // TODO add your handling code here:
+        int selectedRowIndex = jTableProgrammes.getSelectedRow();
+        String name;
+        String type;
+        String genre;
+        String numberOfEpisodes;
+        String length_of_programme;
+        String date = new SimpleDateFormat("dd-MM-yyyy").format(today);
+        System.out.println("tarih: "+date);
+        int rating;
+        Connection connection = null;
+        DbHelper dbHelper = new DbHelper();
+        Statement statement = null;
+        Statement statementEpisodes = null;
+        ResultSet resultSet;
+        ResultSet resultSetEpisodes;
+        PreparedStatement preparedStatement = null;
+        try {
+            name = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 0).toString();
+            type = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 1).toString();
+            genre = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 2).toString();
+            numberOfEpisodes = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 3).toString();
+            length_of_programme = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 4).toString();
+            rating = Integer.parseInt(jTextFieldRating.getText());
+            if (rating < 1 || rating > 10) {
+                throw new ArithmeticException("Lütfen derecelendirmenizi 1-10 arasında yapınız");
+            }
+            connection = dbHelper.getConnection();
+            String sql = "select * from user_programme where user_id=" + currentUser.getId()
+                    + " and program_name=\"" + name + "\" LIMIT 1";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            int rowCounter = 0;
+            while (resultSet.next()) {
+                rowCounter++;
+            }
+            if (rowCounter == 0) {
+                String sqlInsert = "insert into user_programme(user_id,program_name,watching_date,watching_time,episode,rating)"
+                        + "values(?,?,?,?,?,?)";
+                preparedStatement = connection.prepareStatement(sqlInsert);
+                preparedStatement.setInt(1, currentUser.getId());
+                preparedStatement.setString(2, name);
+                preparedStatement.setString(3, date);
+                preparedStatement.setInt(4, Integer.valueOf(length_of_programme));
+                preparedStatement.setInt(5, 1); // ilk bölümünü izliyor
+                preparedStatement.setFloat(6, rating);
+                preparedStatement.executeUpdate();
+                System.out.println("user_programmeye kayıt eklendi.");
+            } else {
+                if ("Dizi".equals(type)) {
+                    String sqlWatchedEpisodes = "select episode from user_programme where user_id=" + currentUser.getId()
+                            + " and program_name=\"" + name + "\" LIMIT 1";
+                    statementEpisodes = connection.createStatement();
+                    resultSetEpisodes = statementEpisodes.executeQuery(sqlWatchedEpisodes);
+                    int watched_episodes = resultSetEpisodes.getInt("episode");
+                    if (watched_episodes >= Integer.valueOf(numberOfEpisodes)) {
+                        throw new IllegalArgumentException("Zaten " + name + " dizisini bitirdin.");
+                    } else {
+                        watched_episodes++;
+                        String sqlUpdate = "update user_programme set episode=" + watched_episodes + ",watching_date=" + date + ",rating=" + rating + " where user_id=? and program_name=?";
+                        preparedStatement = connection.prepareStatement(sqlUpdate);
+                        preparedStatement.setInt(1, currentUser.getId());
+                        preparedStatement.setString(2, name);
+                        preparedStatement.executeUpdate();
+                        System.out.println("user_programme dizi kaydı güncellendi");
+                    }
+                } else {
+                    String sqlUpdate = "update user_programme set rating=" + rating + ",watching_date=" + date + " where user_id=? and program_name=?";
+                    preparedStatement = connection.prepareStatement(sqlUpdate);
+                    preparedStatement.setInt(1, currentUser.getId());
+                    preparedStatement.setString(2, name);
+                    preparedStatement.executeUpdate();
+                    System.out.println("user_programme film kaydı güncellendi");
+                }
+            }
+
+            System.out.println("Program ismi : " + name + " Programın tipi: " + type
+                    + " Programın türü: " + genre + " Bölüm sayısı: " + numberOfEpisodes
+                    + " Program Uzunluğu: " + length_of_programme + " Derecelendirme: " + rating);
+            statement.close();
+            connection.close();
+        } catch (NumberFormatException numberFormatException) {
+            JOptionPane.showMessageDialog(null, "HATA: Lütfen tam sayı giriniz!");
+        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+            JOptionPane.showMessageDialog(null, "HATA: Lütfen izleyeceğiniz filmi seçiniz.");
+        } catch (ArithmeticException arithmeticException) {
+            JOptionPane.showMessageDialog(null, arithmeticException.getMessage());
+        } catch (SQLException sqlException) {
+            dbHelper.showErrorMessage(sqlException);
+            if(sqlException.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)")){
+                JOptionPane.showMessageDialog(null, "Veritabanı bağlantısı kilitlendi, lütfen işleminizi birkaç saniye sonra tekrar ediniz.");
+                //connection'u kapatınca düzeldi.
+            }
+                
+        } catch (IllegalArgumentException illegalArgumentException) {
+            JOptionPane.showMessageDialog(null, illegalArgumentException.getMessage());
+        }
+
+//        try {
+//            connection = dbHelper.getConnection();
+//            System.out.println("SQLite bağlandı");
+//            String sql = "insert into user_programme(user_id,)"
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setString(1, "Emre");
+//            preparedStatement.setString(2, "Akduman");
+//            preparedStatement.setString(3, "25-01-1993");
+//            preparedStatement.executeUpdate();
+//            System.out.println("Kayıt eklendi");
+//        } catch (SQLException ex) {
+//            dbHelper.showErrorMessage(ex);
+//        }
+    }//GEN-LAST:event_jButtonWatchMoviesActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLinkToMoviesHighRated;
+    private javax.swing.JButton jButtonLinkToNetflixUI;
     private javax.swing.JButton jButtonLinkToSignIn;
     private javax.swing.JButton jButtonLinkToSignUp;
     private javax.swing.JButton jButtonSignIn;
     private javax.swing.JButton jButtonSignUp;
+    private javax.swing.JButton jButtonWatchMovies;
     private com.toedter.calendar.JDateChooser jDateChooserDateOfBirth;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -875,6 +1075,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JTable jTableProgrammes;
     private javax.swing.JTextField jTextFieldMailSignIn;
     private javax.swing.JTextField jTextFieldMailSignUp;
+    private javax.swing.JTextField jTextFieldRating;
     private javax.swing.JTextField jTextFieldSearch;
     private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
