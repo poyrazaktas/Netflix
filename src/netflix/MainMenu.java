@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -43,7 +45,7 @@ public class MainMenu extends javax.swing.JFrame {
     JLabel picture;
     Timer timer;
     int x = 0;
-    Date today=java.util.Calendar.getInstance().getTime();
+    LocalDate today = LocalDate.now();
     String[] listOfPictures = {
         "1.jpg",
         "2.jpg",
@@ -918,8 +920,9 @@ public class MainMenu extends javax.swing.JFrame {
         String genre;
         String numberOfEpisodes;
         String length_of_programme;
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(today);
-        System.out.println("tarih: "+date);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+        String date = formatter.format(today);
+        System.out.println("tarih: " + date);
         int rating;
         Connection connection = null;
         DbHelper dbHelper = new DbHelper();
@@ -1000,28 +1003,17 @@ public class MainMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, arithmeticException.getMessage());
         } catch (SQLException sqlException) {
             dbHelper.showErrorMessage(sqlException);
-            if(sqlException.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)")){
+            if (sqlException.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)")) {
                 JOptionPane.showMessageDialog(null, "Veritabanı bağlantısı kilitlendi, lütfen işleminizi birkaç saniye sonra tekrar ediniz.");
                 //connection'u kapatınca düzeldi.
             }
-                
+
         } catch (IllegalArgumentException illegalArgumentException) {
             JOptionPane.showMessageDialog(null, illegalArgumentException.getMessage());
+        } catch(Exception exception){
+            JOptionPane.showMessageDialog(null, "Hesaplanmayan bir hata oluştu: "+exception.getMessage());
         }
 
-//        try {
-//            connection = dbHelper.getConnection();
-//            System.out.println("SQLite bağlandı");
-//            String sql = "insert into user_programme(user_id,)"
-//            preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1, "Emre");
-//            preparedStatement.setString(2, "Akduman");
-//            preparedStatement.setString(3, "25-01-1993");
-//            preparedStatement.executeUpdate();
-//            System.out.println("Kayıt eklendi");
-//        } catch (SQLException ex) {
-//            dbHelper.showErrorMessage(ex);
-//        }
     }//GEN-LAST:event_jButtonWatchMoviesActionPerformed
 
     /**
