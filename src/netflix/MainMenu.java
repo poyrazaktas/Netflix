@@ -17,11 +17,17 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -32,6 +38,7 @@ public class MainMenu extends javax.swing.JFrame {
     /**
      * Creates new form MainMenu
      */
+    DefaultTableModel model;
     JLabel picture;
     Timer timer;
     int x = 0;
@@ -70,9 +77,12 @@ public class MainMenu extends javax.swing.JFrame {
     String[] listOfGenreSelectedFirst = new String[2];
     String[] listOfGenreSelectedSecond = new String[2];
     String[] listOfGenreSelectedThird = new String[2];
+    User currentUser;
+
     public MainMenu() {
         initComponents();
         slideShow();
+        populateTable();
     }
 
     private void slideShow() {
@@ -107,6 +117,43 @@ public class MainMenu extends javax.swing.JFrame {
                 picture.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon newImageIcon = new ImageIcon(newImage);
         picture.setIcon(newImageIcon);
+    }
+
+    public ArrayList<Programme> getProgrammes() {
+        Connection connection = null;
+        DbHelper dbHelper = new DbHelper();
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<Programme> programmes = null;
+        try {
+            connection = dbHelper.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("select * from programme");
+            programmes = new ArrayList<Programme>();
+            while (resultSet.next()) {
+                programmes.add(new Programme(resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("type"),
+                        resultSet.getString("genre"),
+                        resultSet.getInt("number_of_episodes"),
+                        resultSet.getInt("length_of_programme")));
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            dbHelper.showErrorMessage(ex);
+        }
+        return programmes;
+    }
+
+    public void populateTable() {
+        model = (DefaultTableModel) jTableProgrammes.getModel();
+        ArrayList<Programme> programmes = getProgrammes();
+        for (Programme programme : programmes) {
+            Object[] row = {programme.getName(), programme.getType(),
+                programme.getGenre(), programme.getNumberOfEpisodes(), programme.getLengthOfProgramme()};
+            model.addRow(row);
+        }
     }
 
     /**
@@ -148,8 +195,6 @@ public class MainMenu extends javax.swing.JFrame {
         jButtonLinkToMoviesHighRated = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jPanelMoviesHighRated = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabelSelectedGenres = new javax.swing.JLabel();
         jLabelThirdGenre = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListSelectedGenreThird = new javax.swing.JList<>();
@@ -159,6 +204,12 @@ public class MainMenu extends javax.swing.JFrame {
         jLabelSecondGenre = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListSelectedGenreSecond = new javax.swing.JList<>();
+        jPanelNetflixUI = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jTextFieldSearch = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableProgrammes = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NETFLIX");
@@ -383,23 +434,11 @@ public class MainMenu extends javax.swing.JFrame {
         jPanelMoviesHighRated.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
         jPanelMoviesHighRated.setLayout(null);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Seçilen türler:");
-        jPanelMoviesHighRated.add(jLabel11);
-        jLabel11.setBounds(10, 10, 180, 50);
-
-        jLabelSelectedGenres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabelSelectedGenres.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelSelectedGenres.setText("jLabelSelectedGenres");
-        jPanelMoviesHighRated.add(jLabelSelectedGenres);
-        jLabelSelectedGenres.setBounds(10, 60, 650, 50);
-
         jLabelThirdGenre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelThirdGenre.setForeground(new java.awt.Color(255, 255, 255));
         jLabelThirdGenre.setText("Üçüncü türde en iyiler");
         jPanelMoviesHighRated.add(jLabelThirdGenre);
-        jLabelThirdGenre.setBounds(10, 370, 640, 50);
+        jLabelThirdGenre.setBounds(10, 270, 640, 50);
 
         jListSelectedGenreThird.setBackground(new java.awt.Color(51, 51, 51));
         jListSelectedGenreThird.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -412,13 +451,13 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jListSelectedGenreThird);
 
         jPanelMoviesHighRated.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 440, 640, 60);
+        jScrollPane3.setBounds(10, 340, 640, 60);
 
         jLabelFirstGenre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelFirstGenre.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFirstGenre.setText("İlk türde en iyiler");
         jPanelMoviesHighRated.add(jLabelFirstGenre);
-        jLabelFirstGenre.setBounds(10, 110, 630, 50);
+        jLabelFirstGenre.setBounds(10, 10, 630, 50);
 
         jListSelectedGenreFirst.setBackground(new java.awt.Color(51, 51, 51));
         jListSelectedGenreFirst.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -431,13 +470,13 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jListSelectedGenreFirst);
 
         jPanelMoviesHighRated.add(jScrollPane4);
-        jScrollPane4.setBounds(10, 170, 640, 60);
+        jScrollPane4.setBounds(10, 60, 640, 60);
 
         jLabelSecondGenre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelSecondGenre.setForeground(new java.awt.Color(255, 255, 255));
         jLabelSecondGenre.setText("İkinci türde en iyiler");
         jPanelMoviesHighRated.add(jLabelSecondGenre);
-        jLabelSecondGenre.setBounds(10, 240, 640, 50);
+        jLabelSecondGenre.setBounds(10, 140, 640, 50);
 
         jListSelectedGenreSecond.setBackground(new java.awt.Color(51, 51, 51));
         jListSelectedGenreSecond.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -450,9 +489,64 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane5.setViewportView(jListSelectedGenreSecond);
 
         jPanelMoviesHighRated.add(jScrollPane5);
-        jScrollPane5.setBounds(10, 300, 640, 60);
+        jScrollPane5.setBounds(10, 200, 640, 60);
 
         jLayeredPane1.add(jPanelMoviesHighRated, "card5");
+
+        jPanelNetflixUI.setBackground(new java.awt.Color(0.0f, 0.0f, 0.0f, 0.5f));
+        jPanelNetflixUI.setLayout(null);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Netflix'te ara: ");
+        jPanelNetflixUI.add(jLabel11);
+        jLabel11.setBounds(10, 30, 180, 40);
+
+        jTextFieldSearch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldSearchKeyReleased(evt);
+            }
+        });
+        jPanelNetflixUI.add(jTextFieldSearch);
+        jTextFieldSearch.setBounds(200, 30, 420, 40);
+
+        jTableProgrammes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTableProgrammes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Programın Adı", "Programın Tipi", "Programın Türü", "Bölüm Sayısı", "Program Uzunluğu"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTableProgrammes);
+
+        jPanelNetflixUI.add(jScrollPane2);
+        jScrollPane2.setBounds(60, 120, 550, 260);
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel13.setText("*Aramanız büyük-küçük harf duyarlıdır.");
+        jPanelNetflixUI.add(jLabel13);
+        jLabel13.setBounds(80, 80, 500, 40);
+
+        jLayeredPane1.add(jPanelNetflixUI, "card6");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -511,7 +605,7 @@ public class MainMenu extends javax.swing.JFrame {
                 } else {
                     // eğer parola veritabanındaki parolaya eşit değilse mesaj bastır
                     //eşitse sisteme gir 
-                    sql = "select password from user where mail =\"" + jTextFieldMailSignIn.getText() + "\" LIMIT 1";
+                    sql = "select * from user where mail =\"" + jTextFieldMailSignIn.getText() + "\" LIMIT 1";
                     statement = connection.createStatement();
                     resultSet = statement.executeQuery(sql);
                     if (!resultSet.getString("password").equals(String.valueOf(jPasswordFieldSignIn.getPassword()))) {
@@ -520,10 +614,23 @@ public class MainMenu extends javax.swing.JFrame {
                     } else {
                         JOptionPane.showMessageDialog(null, "Tebrikler, başarıyla Netflix-EP'ye girdin.");
                         //Kullanıcı yönetim arayüzüne geçiş yapacak
+                        currentUser = new User(resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getString("mail"),
+                                resultSet.getString("password"),
+                                resultSet.getString("date_of_birth"));
+                        System.out.println("id: " + currentUser.getId()
+                                + " name: " + currentUser.getName()
+                                + " mail: " + currentUser.getMail()
+                                + " password: " + currentUser.getPassword()
+                                + " date_of_birth: " + currentUser.getDate_of_birth());
+                        jPanelSignIn.setVisible(false);
+                        jPanelNetflixUI.setVisible(true);
                     }
                 }
             } catch (SQLException ex) {
                 dbHelper.showErrorMessage(ex);
+                JOptionPane.showMessageDialog(null, "HATA: " + ex.getMessage());
             }
 
         }
@@ -652,8 +759,6 @@ public class MainMenu extends javax.swing.JFrame {
 
                 System.out.println(listOfSelectedGenre);
             }
-            jLabelSelectedGenres.setText(listOfSelectedGenres[0] + ", " + listOfSelectedGenres[1] + ", "
-                    + listOfSelectedGenres[2]);
             //Seçilen Türlere göre en iyi filmleri listelemek için db bağlantısı
             Connection connection = null;
             DbHelper dbHelper = new DbHelper();
@@ -664,41 +769,41 @@ public class MainMenu extends javax.swing.JFrame {
                 System.out.println("SQLite bağlandı");
                 //listOfSelectedGenres[] 0,1,2 alınmalı
                 String[] sql = new String[3];
-                sql[0]="SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \""+listOfSelectedGenres[0]+"\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
-                sql[1]="SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \""+listOfSelectedGenres[1]+"\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
-                sql[2]="SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \""+listOfSelectedGenres[2]+"\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
-                
+                sql[0] = "SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \"" + listOfSelectedGenres[0] + "\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
+                sql[1] = "SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \"" + listOfSelectedGenres[1] + "\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
+                sql[2] = "SELECT program_name, avg(rating) from user_programme where program_name in(SELECT p.name FROM programme as p WHERE p.id in(SELECT gp.programme_id from genre_programme as gp WHERE gp.genre_id in(SELECT g.id from genre as g WHERE g.name = \"" + listOfSelectedGenres[2] + "\"))) GROUP by program_name ORDER BY avg(rating) DESC LIMIT 2;";
+
                 statement = connection.createStatement();
                 resultSet = statement.executeQuery(sql[0]);
-                int index =0;
+                int index = 0;
                 jLabelFirstGenre.setText(listOfSelectedGenres[0]);
                 while (resultSet.next()) {
-                    
-                    listOfGenreSelectedFirst[index] = "Film: " + resultSet.getString("program_name") 
+
+                    listOfGenreSelectedFirst[index] = "Film: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
-                index=0;
+                index = 0;
                 statement = connection.createStatement();
                 resultSet = statement.executeQuery(sql[1]);
                 jLabelSecondGenre.setText(listOfSelectedGenres[1]);
                 while (resultSet.next()) {
-                    
-                    listOfGenreSelectedSecond[index] = "Film: " + resultSet.getString("program_name") 
+
+                    listOfGenreSelectedSecond[index] = "Film: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
-                index=0;
+                index = 0;
                 statement = connection.createStatement();
                 resultSet = statement.executeQuery(sql[2]);
                 jLabelThirdGenre.setText(listOfSelectedGenres[2]);
                 while (resultSet.next()) {
-                    
-                    listOfGenreSelectedThird[index] = "Film: " + resultSet.getString("program_name") 
+
+                    listOfGenreSelectedThird[index] = "Film: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
-                index=0;
+                index = 0;
 
                 statement.close();//
                 connection.close();
@@ -712,6 +817,15 @@ public class MainMenu extends javax.swing.JFrame {
             jPanelMoviesHighRated.setVisible(true);
         }
     }//GEN-LAST:event_jButtonLinkToMoviesHighRatedActionPerformed
+
+    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
+        // TODO add your handling code here:
+        String searchKey = jTextFieldSearch.getText();
+        TableRowSorter<DefaultTableModel> tableRowSorter = new TableRowSorter<DefaultTableModel>(model);
+        jTableProgrammes.setRowSorter(tableRowSorter);
+        tableRowSorter.setRowFilter(RowFilter.regexFilter(searchKey));
+
+    }//GEN-LAST:event_jTextFieldSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -728,6 +842,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -738,7 +853,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelFirstGenre;
     private javax.swing.JLabel jLabelSecondGenre;
-    private javax.swing.JLabel jLabelSelectedGenres;
     private javax.swing.JLabel jLabelThirdGenre;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JList<String> jListMovieGenres;
@@ -747,17 +861,21 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JList<String> jListSelectedGenreThird;
     private javax.swing.JPanel jPanelMoviesGenres;
     private javax.swing.JPanel jPanelMoviesHighRated;
+    private javax.swing.JPanel jPanelNetflixUI;
     private javax.swing.JPanel jPanelSignIn;
     private javax.swing.JPanel jPanelSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignIn;
     private javax.swing.JPasswordField jPasswordFieldSignUp;
     private javax.swing.JPasswordField jPasswordFieldSignUpConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable jTableProgrammes;
     private javax.swing.JTextField jTextFieldMailSignIn;
     private javax.swing.JTextField jTextFieldMailSignUp;
+    private javax.swing.JTextField jTextFieldSearch;
     private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
 }
