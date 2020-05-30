@@ -922,7 +922,6 @@ public class MainMenu extends javax.swing.JFrame {
         String length_of_programme;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
         String date = formatter.format(today);
-        System.out.println("tarih: " + date);
         int rating;
         Connection connection = null;
         DbHelper dbHelper = new DbHelper();
@@ -939,7 +938,7 @@ public class MainMenu extends javax.swing.JFrame {
             length_of_programme = model.getValueAt(jTableProgrammes.convertRowIndexToModel(selectedRowIndex), 4).toString();
             rating = Integer.parseInt(jTextFieldRating.getText());
             if (rating < 1 || rating > 10) {
-                throw new ArithmeticException("Lütfen derecelendirmenizi 1-10 arasında yapınız");
+                throw new ArithmeticException("Lütfen derecelendirmenizi 1-10 arasında yapınız!");
             }
             connection = dbHelper.getConnection();
             String sql = "select * from user_programme where user_id=" + currentUser.getId()
@@ -962,6 +961,11 @@ public class MainMenu extends javax.swing.JFrame {
                 preparedStatement.setFloat(6, rating);
                 preparedStatement.executeUpdate();
                 System.out.println("user_programmeye kayıt eklendi.");
+                if("Film".equals(type)){
+                    JOptionPane.showMessageDialog(null, name +" filmi izlendi.\nFilme puanın: "+rating);
+                }else{
+                    JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nDiziye şu anki puanın: "+rating);
+                }
             } else {
                 if ("Dizi".equals(type)) {
                     String sqlWatchedEpisodes = "select episode from user_programme where user_id=" + currentUser.getId()
@@ -978,6 +982,7 @@ public class MainMenu extends javax.swing.JFrame {
                         preparedStatement.setInt(1, currentUser.getId());
                         preparedStatement.setString(2, name);
                         preparedStatement.executeUpdate();
+                        JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nŞu an "+watched_episodes+".bölümdesin\nDiziye şimdilik puanın: "+rating);
                         System.out.println("user_programme dizi kaydı güncellendi");
                     }
                 } else {
@@ -986,6 +991,7 @@ public class MainMenu extends javax.swing.JFrame {
                     preparedStatement.setInt(1, currentUser.getId());
                     preparedStatement.setString(2, name);
                     preparedStatement.executeUpdate();
+                    JOptionPane.showMessageDialog(null, name+ " filmi tekrar izlendi.\nFilme şimdiki puanın: "+rating);
                     System.out.println("user_programme film kaydı güncellendi");
                 }
             }
@@ -996,7 +1002,7 @@ public class MainMenu extends javax.swing.JFrame {
             statement.close();
             connection.close();
         } catch (NumberFormatException numberFormatException) {
-            JOptionPane.showMessageDialog(null, "HATA: Lütfen tam sayı giriniz!");
+            JOptionPane.showMessageDialog(null, "HATA: Lütfen derecelendirmeye tam sayı giriniz!");
         } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
             JOptionPane.showMessageDialog(null, "HATA: Lütfen izleyeceğiniz filmi seçiniz.");
         } catch (ArithmeticException arithmeticException) {
