@@ -8,7 +8,6 @@ package netflix;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,9 +18,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +25,6 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -46,6 +41,8 @@ public class MainMenu extends javax.swing.JFrame {
     Timer timer;
     int x = 0;
     LocalDate today = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+    String date = formatter.format(today);
     String[] listOfPictures = {
         "1.jpg",
         "2.jpg",
@@ -821,7 +818,7 @@ public class MainMenu extends javax.swing.JFrame {
                 listOfSelectedGenres[i]
                         = jListMovieGenres.getSelectedValuesList().get(i);
             }
-            System.out.println("Seçilen film türleri: ");
+            System.out.println("Seçilen program türleri: ");
             for (String listOfSelectedGenre : listOfSelectedGenres) {
 
                 System.out.println(listOfSelectedGenre);
@@ -846,7 +843,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jLabelFirstGenre.setText(listOfSelectedGenres[0]);
                 while (resultSet.next()) {
 
-                    listOfGenreSelectedFirst[index] = "Film: " + resultSet.getString("program_name")
+                    listOfGenreSelectedFirst[index] = "Program: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
@@ -856,7 +853,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jLabelSecondGenre.setText(listOfSelectedGenres[1]);
                 while (resultSet.next()) {
 
-                    listOfGenreSelectedSecond[index] = "Film: " + resultSet.getString("program_name")
+                    listOfGenreSelectedSecond[index] = "Program: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
@@ -866,7 +863,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jLabelThirdGenre.setText(listOfSelectedGenres[2]);
                 while (resultSet.next()) {
 
-                    listOfGenreSelectedThird[index] = "Film: " + resultSet.getString("program_name")
+                    listOfGenreSelectedThird[index] = "Program: " + resultSet.getString("program_name")
                             + "   Puan: " + resultSet.getFloat("avg(rating)");
                     index++;
                 }
@@ -920,8 +917,6 @@ public class MainMenu extends javax.swing.JFrame {
         String genre;
         String numberOfEpisodes;
         String length_of_programme;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-        String date = formatter.format(today);
         int rating;
         Connection connection = null;
         DbHelper dbHelper = new DbHelper();
