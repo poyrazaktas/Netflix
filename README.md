@@ -1,4 +1,4 @@
-# NetflixEP
+# Netflix
 A Netflix UI Project to improve my skills in Java and Relational Databases
 
 ## Geliştirme Aşaması
