@@ -42,7 +42,8 @@ public class MainMenu extends javax.swing.JFrame {
     int x = 0;
     LocalDate today = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-    String date = formatter.format(today);
+    String date = formatter.format(today); // database' e yanlış loglanabiliyor
+    User currentUser;
     String[] listOfPictures = {
         "1.jpg",
         "2.jpg",
@@ -78,7 +79,7 @@ public class MainMenu extends javax.swing.JFrame {
     String[] listOfGenreSelectedFirst = new String[2];
     String[] listOfGenreSelectedSecond = new String[2];
     String[] listOfGenreSelectedThird = new String[2];
-    User currentUser;
+    
 
     public MainMenu() {
         initComponents();
@@ -956,10 +957,10 @@ public class MainMenu extends javax.swing.JFrame {
                 preparedStatement.setFloat(6, rating);
                 preparedStatement.executeUpdate();
                 System.out.println("user_programmeye kayıt eklendi.");
-                if("Film".equals(type)){
-                    JOptionPane.showMessageDialog(null, name +" filmi izlendi.\nFilme puanın: "+rating);
-                }else{
-                    JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nDiziye şu anki puanın: "+rating);
+                if ("Film".equals(type)) {
+                    JOptionPane.showMessageDialog(null, name + " filmi izlendi.\nFilme puanın: " + rating);
+                } else {
+                    JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nDiziye şu anki puanın: " + rating);
                 }
             } else {
                 if ("Dizi".equals(type)) {
@@ -977,7 +978,7 @@ public class MainMenu extends javax.swing.JFrame {
                         preparedStatement.setInt(1, currentUser.getId());
                         preparedStatement.setString(2, name);
                         preparedStatement.executeUpdate();
-                        JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nŞu an "+watched_episodes+".bölümdesin\nDiziye şimdilik puanın: "+rating);
+                        JOptionPane.showMessageDialog(null, name + " dizisi 1 bölüm izlendi.\nŞu an " + watched_episodes + ".bölümdesin\nDiziye şimdilik puanın: " + rating);
                         System.out.println("user_programme dizi kaydı güncellendi");
                     }
                 } else {
@@ -986,7 +987,7 @@ public class MainMenu extends javax.swing.JFrame {
                     preparedStatement.setInt(1, currentUser.getId());
                     preparedStatement.setString(2, name);
                     preparedStatement.executeUpdate();
-                    JOptionPane.showMessageDialog(null, name+ " filmi tekrar izlendi.\nFilme şimdiki puanın: "+rating);
+                    JOptionPane.showMessageDialog(null, name + " filmi tekrar izlendi.\nFilme şimdiki puanın: " + rating);
                     System.out.println("user_programme film kaydı güncellendi");
                 }
             }
@@ -1011,8 +1012,8 @@ public class MainMenu extends javax.swing.JFrame {
 
         } catch (IllegalArgumentException illegalArgumentException) {
             JOptionPane.showMessageDialog(null, illegalArgumentException.getMessage());
-        } catch(Exception exception){
-            JOptionPane.showMessageDialog(null, "Hesaplanmayan bir hata oluştu: "+exception.getMessage());
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(null, "Hesaplanmayan bir hata oluştu: " + exception.getMessage());
         }
 
     }//GEN-LAST:event_jButtonWatchMoviesActionPerformed

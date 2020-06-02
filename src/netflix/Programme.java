@@ -10,6 +10,7 @@ package netflix;
  * @author Poyraz
  */
 public class Programme {
+    //Programme class for programme table
     private int id;
     private String name;
     private String type;

@@ -14,6 +14,7 @@ import java.sql.SQLException;
  * @author Poyraz
  */
 public class DbHelper {
+    //A Database Helper to get connection
      private String dbUrl = "jdbc:sqlite:databases\\netflix_ep.db";
     
     public Connection getConnection() throws SQLException{

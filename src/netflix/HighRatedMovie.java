@@ -10,6 +10,8 @@ package netflix;
  * @author Poyraz
  */
 public class HighRatedMovie {
+    //HighRatedMovie class to store user_programme's table attributes like 
+    //programme_name and rating
     private String name;
     private float rating;
 

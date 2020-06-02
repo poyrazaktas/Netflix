@@ -13,7 +13,8 @@ public class Netflix {
     /**
      * @param args the command line arguments
      */
-        public static void main(String args[]) {             
+        public static void main(String args[]) {     
+        //Main code to call components
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -38,6 +39,7 @@ public class Netflix {
         //</editor-fold>
 
         /* Create and display the form */
+        // lambda expression java 8 sürümü aşağısı desteklemiyor.
         java.awt.EventQueue.invokeLater(() -> {
             new MainMenu().setVisible(true);
         });
