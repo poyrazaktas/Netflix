@@ -10,6 +10,7 @@ package netflix;
  * @author Poyraz
  */
 public class User {
+    //User class for user table
     private int id;
     private String name;
     private String mail;
