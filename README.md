@@ -9,7 +9,7 @@ Veritabanı tasarımı için SQLite kullanıldı.<br>
 ## Derleme ve Çalıştırma Aşaması
 Projeyi çalıştırmak için proje dosyalarını IDE'nize ekleyin.<br>
 Derleyip çalıştırın.<br>
-Veritabanındaki değişiklikleri görmek için [DB Browser](https://sqlitebrowser.org/) 'ı indirebilir .<br>
+Veritabanındaki değişiklikleri görmek için [DB Browser](https://sqlitebrowser.org/) 'ı indirebilirsiniz .<br>
 Kullanılan API'ler tools dosyasına eklendi.<br>
 Çalıştırılabilir **.jar** dosyası *dist* dizininin içerisindedir.<br>
 
